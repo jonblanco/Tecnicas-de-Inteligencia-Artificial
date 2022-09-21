@@ -17,6 +17,7 @@ In search.py, you will implement generic search algorithms which are called by
 Pacman agents (in searchAgents.py).
 """
 
+from email import utils
 import util
 
 class SearchProblem:
@@ -92,6 +93,44 @@ def depthFirstSearch(problem):
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
+    print("Start:", problem.getStartState())
+    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
+    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
+    print("\n")
+   
+    fringe = util.Queue() #frontera (sin explorar), candidatos
+    closed = set() #explorados
+    lista_direcciones = [] #movimientos para el pacman
+    
+    #primer estado, le meto las coordenadas iniciales y 
+    #la lista de direcciones por las que alcanzar esa 
+    #posicion. Al principio está vacía ya que es el nodo
+    #inicial
+
+    fringe.push((problem.getStartState(), lista_direcciones))
+   
+    #mientras tengamos frontera:
+    while not fringe.isEmpty():
+        
+        
+        actualcoordenada, actual_camino = fringe.pop() #sacamos la coordenada y
+                                                    #el camino para llegar a ella
+        
+        if problem.isGoalState(actualcoordenada): #si hemos llegado al punto blanco...
+            return actual_camino
+        
+        #si no tenemos explorada la coordenada actual (esto evita explorar dos veces la misma posición)
+        if actualcoordenada not in closed:
+            closed.add(actualcoordenada) #añadimos a explorados la coordenada
+            sucesores = problem.getSuccessors(actualcoordenada) #sacamos los de alrededor
+            for coord, movimiento, coste in sucesores: #de todos los de alrededor...
+                if coord not in closed: #si cada coordenada no está explorada
+                    nuevalistadirecciones = actual_camino + [movimiento] #la añadimos a la lista de 
+                                                                        #movimientos que vamos actualizando sin parar
+                    fringe.push((coord, nuevalistadirecciones)) #metemos en la cola la coordenada 
+                                                                # y el camino para llegar a ella
+    
+
     util.raiseNotDefined()
 
 def uniformCostSearch(problem):
