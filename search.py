@@ -17,7 +17,9 @@ In search.py, you will implement generic search algorithms which are called by
 Pacman agents (in searchAgents.py).
 """
 
+from cmath import exp
 from email import utils
+from inspect import CORO_SUSPENDED
 import util
 
 class SearchProblem:
@@ -74,6 +76,59 @@ def tinyMazeSearch(problem):
     return  [s, s, w, s, w, w, s, w]
 
 def depthFirstSearch(problem):
+    #Markel
+    #Creamos una clase Nodo que contenga los siguientes datos
+    #   coordenada: la coordenada del propio nodo
+    #   camino: el camino que debe realizar el pacman para llegar a él
+    class Nodo:
+        def __init__(self , coordenada, camino=[]):
+            self.coordenada = coordenada
+            self.camino = camino
+        
+        def print():
+            #Metodo de prueba para ir comprobando si funciona
+            #Este metodo se asemeja a toString() en Java
+            print("coordenada: "+str(self.coordenada))
+            print()
+            print("camino: "+str(self.camino))
+    
+    #Obtenemos la coordenada inicial
+    coordenadaInicial = problem.getStartState()
+    #Creamos un Nodo con dicha coordenada con la clase que habiamos creado
+    nodoInicial = Nodo(coordenada= coordenadaInicial)
+    #Creamos una pila para ir almacenando los Nodos por visitar
+    sinExplorar = util.Stack()
+    #Introducimos el nodoInicial a la pila
+    sinExplorar.push(nodoInicial)
+    #Creamos una lista tipo set para ir almacenando las coordenadas visitadas
+    explorados = set() #En un set es imposible que se repitan elementos
+
+
+    while not sinExplorar.isEmpty(): 
+        #Mientras no se termine la pila
+        nodoActual = sinExplorar.pop()
+        #Vamos sacando nodos de uno en uno 
+        if nodoActual.coordenada not in explorados:
+            #Y comprobamos si el nodo que hemos sacado ya lo hemos visitado
+            explorados.add(nodoActual.coordenada)
+            #Si no es asi, lo introducimos a el set marcandolo como visitado
+            if problem.isGoalState(nodoActual.coordenada):
+                #En caso de que el nodo que estemos analizando sea el final del camino hacemos return
+                return nodoActual.camino
+            vecinos = problem.getSuccessors( nodoActual.coordenada )
+            #En caso contrario vamos sacando sus nodos vecinos
+            for vecino in vecinos:
+                #Por cada nodo vecino que tenga
+                #Vamos a completar el camino hacia ese nodo uniendo el camino que traia el anterior
+                #con la direccion que trae este
+                caminoNuevo = nodoActual.camino + [vecino[1]]
+                #y con este camino y la coordenada, crearemos un nuevoNodo 
+                nodoNuevo = Nodo(coordenada = vecino[0], camino = caminoNuevo)
+                #Finalmente este nuevo nodo lo meteremos en la pila para posteriormente analizarlo
+                sinExplorar.push(nodoNuevo)
+    
+    #finalmente devolvemos el camino que tiene el ultimo nodo analizado
+    return nodoActual.camino    
     """
     Search the deepest nodes in the search tree first.
 
