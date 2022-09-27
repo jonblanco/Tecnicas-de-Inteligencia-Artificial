@@ -159,20 +159,21 @@ def breadthFirstSearch(problem):
     #inicial
 
     fringe.push((problem.getStartState(), lista_direcciones))
+    
     #mientras tengamos frontera:
     while not fringe.isEmpty():
         
         
-        actualcoordenada, actual_camino = fringe.pop() #sacamos la coordenada y
+        actual_estado, actual_camino = fringe.pop() #sacamos la coordenada y
                                                     #el camino para llegar a ella
         
-        if problem.isGoalState(actualcoordenada): #si hemos llegado al punto blanco...
+        if problem.isGoalState(actual_estado): #si hemos llegado al punto blanco...
             return actual_camino
         
         #si no tenemos explorada la coordenada actual (esto evita explorar dos veces la misma posición)
-        elif actualcoordenada not in closed:
-            closed.add(actualcoordenada) #añadimos a explorados la coordenada
-            sucesores = problem.getSuccessors(actualcoordenada) #sacamos los de alrededor
+        elif actual_estado not in closed:
+            closed.add(actual_estado) #añadimos a explorados la coordenada
+            sucesores = problem.getSuccessors(actual_estado) #sacamos los de alrededor
             for coord, movimiento, coste in sucesores: #de todos los de alrededor...
                 #if coord not in closed: #si cada coordenada no está explorada
                 nuevalistadirecciones = actual_camino + [movimiento] #la añadimos a la lista de 
@@ -180,8 +181,7 @@ def breadthFirstSearch(problem):
                 fringe.push((coord, nuevalistadirecciones)) #metemos en la cola la coordenada 
                                                             # y el camino para llegar a ella
             
-
-
+    return []
     #util.raiseNotDefined()
 
 def uniformCostSearch(problem):
