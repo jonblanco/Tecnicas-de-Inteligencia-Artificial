@@ -148,10 +148,6 @@ def depthFirstSearch(problem):
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    print("Start:", problem.getStartState())
-    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
-    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
-    print("\n")
    
     fringe = util.Queue() #frontera (sin explorar), candidatos
     closed = set() #explorados
@@ -163,7 +159,6 @@ def breadthFirstSearch(problem):
     #inicial
 
     fringe.push((problem.getStartState(), lista_direcciones))
-   
     #mientras tengamos frontera:
     while not fringe.isEmpty():
         
@@ -175,18 +170,19 @@ def breadthFirstSearch(problem):
             return actual_camino
         
         #si no tenemos explorada la coordenada actual (esto evita explorar dos veces la misma posición)
-        if actualcoordenada not in closed:
+        elif actualcoordenada not in closed:
             closed.add(actualcoordenada) #añadimos a explorados la coordenada
             sucesores = problem.getSuccessors(actualcoordenada) #sacamos los de alrededor
             for coord, movimiento, coste in sucesores: #de todos los de alrededor...
-                if coord not in closed: #si cada coordenada no está explorada
-                    nuevalistadirecciones = actual_camino + [movimiento] #la añadimos a la lista de 
-                                                                        #movimientos que vamos actualizando sin parar
-                    fringe.push((coord, nuevalistadirecciones)) #metemos en la cola la coordenada 
-                                                                # y el camino para llegar a ella
-    
+                #if coord not in closed: #si cada coordenada no está explorada
+                nuevalistadirecciones = actual_camino + [movimiento] #la añadimos a la lista de 
+                                                                    #movimientos que vamos actualizando sin parar
+                fringe.push((coord, nuevalistadirecciones)) #metemos en la cola la coordenada 
+                                                            # y el camino para llegar a ella
+            
 
-    util.raiseNotDefined()
+
+    #util.raiseNotDefined()
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
