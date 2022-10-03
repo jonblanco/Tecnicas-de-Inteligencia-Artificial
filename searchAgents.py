@@ -295,13 +295,17 @@ class CornersProblem(search.SearchProblem):
         space)
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        pos = self.startingPosition
+        print(pos)
+        return pos #devuelve la posicion inicial del pacman
+        #util.raiseNotDefined()
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
+        
         util.raiseNotDefined()
 
     def getSuccessors(self, state):
