@@ -194,13 +194,6 @@ def uniformCostSearch(problem):
             self.coordenada = coordenada
             self.camino = camino
             self.coste = coste
-        
-        def print():
-            #Metodo de prueba para ir comprobando si funciona
-            #Este metodo se asemeja a toString() en Java
-            print("coordenada: "+str(self.coordenada))
-            print()
-            print("camino: "+str(self.camino))
     
     coordenadaInicial = problem.getStartState()
     nodoInicial = Nodo(coordenada= coordenadaInicial)
@@ -238,6 +231,47 @@ def nullHeuristic(state, problem=None):
     return 0
 
 def aStarSearch(problem, heuristic=nullHeuristic):
+    #Markel
+    #Creamos una clase Nodo que contenga los siguientes datos
+    #   coordenada: la coordenada del propio nodo
+    #   camino: el camino que debe realizar el pacman para llegar a él
+    class Nodo:
+        def __init__(self , coordenada, camino=[], coste=0):
+            self.coordenada = coordenada
+            self.camino = camino
+            self.coste = coste
+            
+    #Creamos el nodo inicial
+    coordenadaInicial = problem.getStartState()
+    nodoInicial = Nodo(coordenada= coordenadaInicial)
+    
+    #Lo insertamos en sinExplorar con su coste=0
+    sinExplorar = util.PriorityQueue()
+    sinExplorar.push(nodoInicial, nodoInicial.coste)
+    explorados = set() 
+
+    while not sinExplorar.isEmpty(): 
+        nodoActual = sinExplorar.pop()
+        if nodoActual.coordenada not in explorados:
+            explorados.add(nodoActual.coordenada)
+            if problem.isGoalState(nodoActual.coordenada):
+                return nodoActual.camino
+            
+            vecinos = problem.getSuccessors( nodoActual.coordenada )
+            for coordVecino,caminoVecino,costeVecino in vecinos:
+                #Camino = el camino que hay que recorrer para llegar a ese nodo
+                #Coste = el coste que tiene llegar al nodo + el heuristico
+                caminoNuevo = nodoActual.camino + [caminoVecino]
+                nodoNuevo = Nodo(coordenada    = coordVecino, 
+                                 camino        = caminoNuevo, 
+                                 coste         = problem.getCostOfActions(caminoNuevo) + heuristic(coordVecino,problem))
+                
+                sinExplorar.push(nodoNuevo, nodoNuevo.coste)
+
+    print("Se ha terminado la priorityQueue")    
+    #finalmente devolvemos el camino que tiene el ultimo nodo analizado
+    return nodoActual.camino
+    
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
     util.raiseNotDefined()
