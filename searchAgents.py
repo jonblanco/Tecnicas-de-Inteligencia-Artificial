@@ -34,6 +34,7 @@ description for details.
 Good luck and happy searching!
 """
 
+from os import stat
 from game import Directions
 from game import Agent
 from game import Actions
@@ -295,18 +296,30 @@ class CornersProblem(search.SearchProblem):
         space)
         """
         "*** YOUR CODE HERE ***"
+        #despues de hablar con Aitziber, la idea es devolver la posicion y una lista vacia 
+        # donde posteriormente incluiremos las esquinas
         pos = self.startingPosition
-        print(pos)
-        return pos #devuelve la posicion inicial del pacman
-        #util.raiseNotDefined()
+        vacia = []
+        return (pos, vacia) #devuelve la posicion inicial del pacman y la lista inicial vacia de esquinas recorridas
+        
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
-        
-        util.raiseNotDefined()
+        #el goalstate será true si tenemos las comidas de las 4 esquinas comidas
+        #para eso, comprobando la longitud de la lista se esquinas, si es 4, sabremos que hemos finalizado
+
+        posicion_PacMan = state[0] #parte de la tupla que contiene la pos.
+        n_esquinas = len(state[1]) #las esquinas
+        estado = False
+        if posicion_PacMan in self.corners: #es decir, si estamos en una de las cuatro esquinas comprobamos:
+            if posicion_PacMan not in state[1]: #es decir, si el pacman no esta en una esquina
+                n_esquinas=n_esquinas+1
+            if n_esquinas == 4:
+                estado = True
+        return estado
 
     def getSuccessors(self, state):
         """
@@ -329,6 +342,19 @@ class CornersProblem(search.SearchProblem):
             #   hitsWall = self.walls[nextx][nexty]
 
             "*** YOUR CODE HERE ***"
+            #voy a usar los que da ahi arriba para saber cuando choca
+            x,y = state[0]
+            dx, dy = Actions.directionToVector(action)
+            nextx, nexty = int(x + dx), int(y + dy)
+            hitsWall = self.walls[nextx][nexty]
+            if not hitsWall: 
+                #si no ha tocado pared compruebo si estamos en esquina
+                visi = list(state[1])
+                if (nextx,nexty) in self.corners:
+                    if (nextx, nexty) not in visi:
+                        visi.append((nextx,nexty))
+                coste=1
+                successors.append((((nextx,nexty),visi),action,coste))
 
         self._expanded += 1 # DO NOT CHANGE
         return successors
