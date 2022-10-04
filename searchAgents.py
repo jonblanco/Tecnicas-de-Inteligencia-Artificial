@@ -289,7 +289,7 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
-
+        
     def getStartState(self):
         """
         Returns the start state (in your state space, not the full Pacman state
@@ -372,6 +372,15 @@ class CornersProblem(search.SearchProblem):
             if self.walls[x][y]: return 999999
         return len(actions)
 
+def manhattanDistanceCorners(pos1, pos2):
+
+    #devuelve el manhattan entre dos posiciones, sin mas
+    return abs( pos1[0] - pos2[0] ) + abs( pos1[1] - pos2[1] )
+
+def euclideanDistanceCorners(pos1, pos2):
+
+    #devuelve la distancia euclidea entre dos posiciones
+    return ( (pos1[0] - pos2[0]) ** 2 + (pos1[1] - pos2[1]) ** 2 ) ** 0.5
 
 def cornersHeuristic(state, problem):
     """
@@ -388,9 +397,40 @@ def cornersHeuristic(state, problem):
     """
     corners = problem.corners # These are the corner coordinates
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
-
+    
     "*** YOUR CODE HERE ***"
-    return 0 # Default to trivial solution
+    '''
+    x_esquina=int(corners[0][0]) #vamos a pillar una esquina
+    y_esquina=int(corners[0][1])
+    #vamos a calcular la distancia a esa esquina
+    x_pacman=int(state[0][0])
+    y_pacman=int(state[0][1])
+    
+    
+    resta=(x_esquina - x_pacman)+(y_esquina-y_pacman)
+    '''
+    
+    #al ejecutarse cada vez que se mueve, el state[0] siempre va a ser nuestra posicion de pacman actual
+    #entonces podemos definir una posicion actual como state[0]
+
+    pos_actual=state[0]
+    total=0 #suma total a devolver
+    esquinas_sinmirar = tuple()
+    for i in range(len(corners)):
+        if corners[i] not in state[1]: #es decir, si no hemos estado en esa esquina:
+            esquinas_sinmirar = esquinas_sinmirar + (corners[i],) #añadimos ese corner a nuestras esquinas sin mirar
+
+    while (len(esquinas_sinmirar)>=0):
+        for esquina in esquinas_sinmirar:
+            distancia_minima = min(manhattanDistanceCorners(pos_actual, esquina), euclideanDistanceCorners(pos_actual, esquina) )
+            total = total + distancia_minima
+            pos_actual=esquina
+            #lo hago asi para poder borrar de tupla:
+            enlistada = list(esquinas_sinmirar)
+            enlistada.remove(esquina)
+            mitupla=tuple(enlistada)
+    
+    return total # Default to trivial solution
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
