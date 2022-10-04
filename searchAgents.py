@@ -299,7 +299,7 @@ class CornersProblem(search.SearchProblem):
         #despues de hablar con Aitziber, la idea es devolver la posicion y una lista vacia 
         # donde posteriormente incluiremos las esquinas
         pos = self.startingPosition
-        vacia = []
+        vacia = tuple()
         return (pos, vacia) #devuelve la posicion inicial del pacman y la lista inicial vacia de esquinas recorridas
         
 
@@ -354,7 +354,7 @@ class CornersProblem(search.SearchProblem):
                     if (nextx, nexty) not in visi:
                         visi.append((nextx,nexty))
                 coste=1
-                successors.append((((nextx,nexty),visi),action,coste))
+                successors.append((((nextx,nexty),tuple(visi)),action,coste))
 
         self._expanded += 1 # DO NOT CHANGE
         return successors
