@@ -316,8 +316,8 @@ class CornersProblem(search.SearchProblem):
         estado = False
         if posicion_PacMan in self.corners: #es decir, si estamos en una de las cuatro esquinas comprobamos:
             if posicion_PacMan not in state[1]: #es decir, si el pacman no esta en una esquina
-                n_esquinas=n_esquinas+1
-            if n_esquinas == 4:
+                n_esquinas=n_esquinas+1 #sumamos esquina
+            if n_esquinas == 4: #si hay 4
                 estado = True
         return estado
 

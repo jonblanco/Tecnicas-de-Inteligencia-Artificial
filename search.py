@@ -151,14 +151,14 @@ def breadthFirstSearch(problem):
    
     fringe = util.Queue() #frontera (sin explorar), candidatos
     closed = set() #explorados
-    lista_direcciones = tuple() #movimientos para el pacman
+    #lista_direcciones = [] #movimientos para el pacman
     
     #primer estado, le meto las coordenadas iniciales y 
     #la lista de direcciones por las que alcanzar esa 
     #posicion. Al principio está vacía ya que es el nodo
     #inicial
 
-    fringe.push((problem.getStartState(), lista_direcciones))
+    fringe.push((problem.getStartState(), []))
     
     #mientras tengamos frontera:
     while not fringe.isEmpty():
@@ -168,7 +168,7 @@ def breadthFirstSearch(problem):
                                                     #el camino para llegar a ella
         
         if problem.isGoalState(actual_estado): #si hemos llegado al punto blanco...
-            return list(actual_camino)
+            return actual_camino
         
         #si no tenemos explorada la coordenada actual (esto evita explorar dos veces la misma posición)
         elif actual_estado not in closed:
@@ -176,13 +176,13 @@ def breadthFirstSearch(problem):
             sucesores = problem.getSuccessors(actual_estado) #sacamos los de alrededor
             for coord, movimiento, coste in sucesores: #de todos los de alrededor...
                 #if coord not in closed: #si cada coordenada no está explorada
-                nuevalistadirecciones = actual_camino + (movimiento,) #la añadimos a la lista de 
+                nuevalistadirecciones = actual_camino + [movimiento] #la añadimos a la lista de 
                                                                     #movimientos que vamos actualizando sin parar
                 fringe.push((coord, nuevalistadirecciones)) #metemos en la cola la coordenada 
                                                             # y el camino para llegar a ella
     vacio=tuple()       
     return vacio
-        
+
     #util.raiseNotDefined()
 
 def uniformCostSearch(problem):
