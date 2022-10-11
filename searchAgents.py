@@ -399,38 +399,39 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
     
     "*** YOUR CODE HERE ***"
-    '''
-    x_esquina=int(corners[0][0]) #vamos a pillar una esquina
-    y_esquina=int(corners[0][1])
-    #vamos a calcular la distancia a esa esquina
-    x_pacman=int(state[0][0])
-    y_pacman=int(state[0][1])
-    
-    
-    resta=(x_esquina - x_pacman)+(y_esquina-y_pacman)
-    '''
-    
     #al ejecutarse cada vez que se mueve, el state[0] siempre va a ser nuestra posicion de pacman actual
     #entonces podemos definir una posicion actual como state[0]
+   
+    sinvisitar = tuple() #lista de esquinas sin visitar
+    pos_Actual = state[0] #posicion pacman
+    h = 0 #suma a devolver
 
-    pos_actual=state[0]
-    total=0 #suma total a devolver
-    esquinas_sinmirar = tuple()
-    for i in range(len(corners)):
-        if corners[i] not in state[1]: #es decir, si no hemos estado en esa esquina:
-            esquinas_sinmirar = esquinas_sinmirar + (corners[i],) #añadimos ese corner a nuestras esquinas sin mirar
-
-    while (len(esquinas_sinmirar)>=0):
-        for esquina in esquinas_sinmirar:
-            distancia_minima = min(manhattanDistanceCorners(pos_actual, esquina), euclideanDistanceCorners(pos_actual, esquina) )
-            total = total + distancia_minima
-            pos_actual=esquina
-            #lo hago asi para poder borrar de tupla:
-            enlistada = list(esquinas_sinmirar)
-            enlistada.remove(esquina)
-            mitupla=tuple(enlistada)
+    #PRIMER PASO: añadir en el momento cada esquina (son 4) a una lista de "sin visitar" si no estan visitadas
+    for i in range(4): #para las esquinas
+        if corners[i] not in state[1]: #si las esquinas del problema no estan visitadas:
+            sinvisitar = sinvisitar + (corners[i],) #añadimos la esquina a no visitados
     
-    return total # Default to trivial solution
+    while (len(sinvisitar)!=0): #mientras haya esquinas sin visitar
+        #por cada esquina sin sinvisitar cogemos la de menos distancia manhattan y la de menos distancia euclidea:
+        distancia_minima_manhattan, esquina_manhattan = min([(manhattanDistanceCorners(pos_Actual, esquina), esquina) for esquina in sinvisitar])
+        distancia_minima_euclidean, esquina_euclidean = min([(euclideanDistanceCorners(pos_Actual, esquina), esquina) for esquina in sinvisitar])
+        distancia_minima_tipo = min(distancia_minima_manhattan, distancia_minima_euclidean) #comparo los dos tipos de distancia, y la minima será la elegida
+        if (distancia_minima_tipo == distancia_minima_manhattan):
+            h = h + distancia_minima_manhattan
+            pos_Actual = esquina_manhattan
+            lista = list(sinvisitar)
+            lista.remove(esquina_manhattan)
+            sinvisitar = tuple(lista)
+        else:
+            if(distancia_minima_tipo == distancia_minima_euclidean):
+                h = h + distancia_minima_euclidean
+                pos_Actual = esquina_euclidean
+                lista = list(sinvisitar)
+                lista.remove(esquina_euclidean)
+                sinvisitar = tuple(lista)
+
+    return h
+
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
