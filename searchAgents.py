@@ -11,7 +11,7 @@
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
-
+import math #Para el heuristico de FoodSearch
 """
 This file contains all of the agents that can be selected to control Pacman.  To
 select an agent, use the '-p' option when running pacman.py.  Arguments can be
@@ -523,9 +523,41 @@ def foodHeuristic(state, problem):
     Subsequent calls to this heuristic can access
     problem.heuristicInfo['wallCount']
     """
-    position, foodGrid = state
+    
+    
+    
+    posicionPacman, foodGrid = state
     "*** YOUR CODE HERE ***"
-    return 0
+    #posicionPacman: la coordenada del Pacman (x,y)
+    #foodGrid: Una cuadricula de True/False diciendo si hay o no comida en la casilla
+    #   T   |   F   |   F
+    #---------------------
+    #   F   |   F   |   F
+    #---------------------
+    #   T   |   F   |   T
+    #El objetivo es devolver la distancia maxima entre el Pacman y la comida 
+    #Es decir solamente tenemos que devolver un numero
+
+    start_position = problem.startingGameState
+    food_list = foodGrid.asList()
+    heuristic = 0   # Initializes the heuristic to 0.
+
+    for casillaComida in food_list:
+        distanciaComida = pitagoras(posicionPacman,casillaComida)
+        if distanciaComida > heuristic:
+            heuristic = distanciaComida
+    return heuristic
+    
+
+def pitagoras(pos1,pos2):
+    x1,y1=pos1
+    x2,y2=pos2
+    px = x2-x1
+    py = y2-y1
+    sumapotencias=px**2+py**2
+    hipotenusa=math.sqrt(sumapotencias)
+    return hipotenusa
+
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
