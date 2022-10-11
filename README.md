@@ -1,9 +1,8 @@
 <p align="center"> 
-  <img src="gif/Pacman Logo2.jpg" alt="Pacman Logo" width="80px" height="80px">
+  <img src="https://pm1.narvii.com/7445/704fc5bd2b6f7bf30dcbc0ea2fc8aaaabbd51611r1-639-466v2_hq.jpg" alt="Pacman Logo" width="80px" height="80px">
 </p>
-<h1 align="center"> Pacman Agent </h1>
-<h3 align="center"> COMP 6721 - Artificial Intelligence </h3>
-<h5 align="center"> Project Assignment 1 - <a href="https://www.concordia.ca/">Concordia University</a> (Winter 2020) </h5>
+<h1 align="center"> Proyecto Pacman</h1>
+<h3 align="center"> Tecnicas de Inteligencia Artificial </h3>
 
 <p align="center"> 
   <img src="gif/pacman_game.gif" alt="Animated gif pacman game" height="282px" width="637">
