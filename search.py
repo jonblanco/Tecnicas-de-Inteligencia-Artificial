@@ -213,8 +213,7 @@ def uniformCostSearch(problem):
             for coordVecino,caminoVecino,costeVecino in vecinos:
                 nodoNuevo = Nodo(coordenada = coordVecino, camino = nodoActual.camino + [caminoVecino], coste= nodoActual.coste + costeVecino)
                 sinExplorar.update(nodoNuevo, nodoNuevo.coste)
-
-    print("Se ha terminado la priorityQueue")    
+ 
     #finalmente devolvemos el camino que tiene el ultimo nodo analizado
     return [] 
 
@@ -268,8 +267,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                                  coste         = problem.getCostOfActions(caminoNuevo) + heuristic(coordVecino,problem))
                 
                 sinExplorar.push(nodoNuevo, nodoNuevo.coste)
-
-    print("Se ha terminado la priorityQueue")    
+ 
     #finalmente devolvemos el camino que tiene el ultimo nodo analizado
     return nodoActual.camino
     

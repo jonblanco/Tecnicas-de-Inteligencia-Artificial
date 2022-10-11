@@ -587,6 +587,13 @@ class ClosestDotSearchAgent(SearchAgent):
         walls = gameState.getWalls()
         problem = AnyFoodSearchProblem(gameState)
 
+        return search.aStarSearch(problem)
+        
+
+
+
+
+
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()
 
@@ -609,7 +616,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         "Stores information from the gameState.  You don't need to change this."
         # Store the food for later reference
         self.food = gameState.getFood()
-
+        self.gameState = gameState
         # Store info for the PositionSearchProblem (no need to change this)
         self.walls = gameState.getWalls()
         self.startState = gameState.getPacmanPosition()
@@ -622,6 +629,10 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         complete the problem definition.
         """
         x,y = state
+        #Debemos comprobar si esta coordenadas esta entre las que tienen comida
+        #Si es asi devolvemos True, al contrario, False
+        return self.gameState.hasFood(x,y)
+        
 
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()
